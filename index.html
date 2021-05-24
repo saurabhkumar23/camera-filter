@@ -1,85 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<!-- Aim -> video audio element -> camera microphone feed -->
-<!-- Aim -> record the media stream when someone presses recordBtn  and when i stop download the recording-->
-
 <body>
     <video controls autoplay></video>
-    <audio controls autoplay></audio>
-    <button class="record">Record</button>
-    <button class="pause">Pause</button>
-    
-    <!-- browser getcamera /mic -->
-    <!-- stream -->
+
+
     <script>
-        let videoElem = document.querySelector("video");
-        let audioElem = document.querySelector("audio");
-        let recordBtn = document.querySelector(".record");
-        let pauseBtn = document.querySelector(".pause");
-        let isRecording = false;
-        let isPaused = false;
-        let constraint = {          // user  requirement send 
-            audio: true,
-            video: true
+        let videoElem = document.querySelector('video');
+
+        // get stream? - mediaDevicesAPI
+        // first ask for permission then get it.
+        // record stream? - mediaRecorderAPI
+        // takes data from a stream and delivering it to you by 
+        // a series of dataavailable events which fired automatically when buffer is filled.
+        
+        let constraints = {     // requirements
+            audio:true, video:true
         }
-        let recording = [];        // we require it because data comes in chunks
-        let mediarecordingObjectForCurrStream;
+        let userMediaPromise = navigator.mediaDevices.getUserMedia(constraints);         // browser ask permission
+        userMediaPromise.then(function(stream){                                 // if user allows, we get stream
+            //videoElem.srcObject = stream                                    // UI - give it to video element.
 
-        // promise 
-        let usermediaPromise = navigator.mediaDevices.getUserMedia(constraint);
-        // /stream coming from required
-        usermediaPromise.then(function (stream) {
-            // UI stream 
-            videoElem.srcObject = stream;
-            audioElem.srcObject = stream;
-            // browser
-            mediarecordingObjectForCurrStream = new MediaRecorder(stream);
-            // camera recording add -> recording array
-            mediarecordingObjectForCurrStream.ondataavailable = function(e) {     // run when it gets data(chunks) after the start
-                recording.push(e.data);
-            }
-            // download when recording is stopped
-            mediarecordingObjectForCurrStream.addEventListener("stop", function () {
-                // type -> MIME type           (to tell machines, which type of data we are dealing with)
-                const blob = new Blob(recording, {
-                    type: 'video/mp4'
-                });
-                const url = window.URL.createObjectURL(blob); // url convert from recording
-                let a = document.createElement("a");
-                a.download = "file.mp4";
-                a.href = url;
-                a.click();
-                recording = []                  // empties when work done
-            })
-        }).catch(function (err) {
-            console.log(err)
-            alert("please allow both microphone and camera");
-        });
-
-        // record button 
-        recordBtn.addEventListener("click", function () {
-            if (mediarecordingObjectForCurrStream == undefined) {        
-                alert("First select the devices");
-                return;
-            }
-            if (isRecording == false) {                       // start recording
-                mediarecordingObjectForCurrStream.start();
-                recordBtn.innerText = "Recording....";
-            } else {                                         // end recording
-                mediarecordingObjectForCurrStream.stop();
-                recordBtn.innerText = "Record";
-            }
-            isRecording = !isRecording
+        })
+        .catch(function(err){
+            alert('first, please allow both of them.');
         });
 
     </script>
 </body>
-
 </html>
