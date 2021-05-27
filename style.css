@@ -1,9 +1,13 @@
+/* init */
+
 *{
     box-sizing: border-box;
 }
 body{
     margin:0px;
 }
+
+/*************************************** video container ********************************/
 .video-container{
     background-color: black;
     width:100vw;
@@ -12,15 +16,4 @@ body{
 .video{
     height: 100%;
     width:100%;
-}
-.round-btn{
-    height: 5rem;
-    width: 5rem;
-    border-radius: 50%;
-    position: fixed;
-    top: 30%;
-    right: 3%;
-}
-.click{
-    top: 45%;  
 }
