@@ -59,3 +59,69 @@ recordBtn.addEventListener('click', function () {
     }
     isRecording = !isRecording
 });
+
+////////////////////////////////////////////////// today
+
+let captureImgBtn = document.querySelector('.click')
+
+captureImgBtn.addEventListener('click',function(){
+    let canvas = document.createElement('canvas')
+    canvas.height = videoElem.videoHeight
+    canvas.width = videoElem.videoWidth
+    let tool = canvas.getContext('2d')
+    tool.drawImage(videoElem,0,0)
+    if(filterColor){
+        tool.fillStyle = filterColor
+        tool.fillRect(0,0,canvas.width,canvas.height)
+    }
+    let url = canvas.toDataURL()
+    let a = document.createElement('a')
+    a.download = 'file.png'
+    a.href = url
+    a.click()
+    a.remove()
+})
+
+let filterArr = document.querySelectorAll('.filter')
+let filterArea = document.querySelector('.filter_overlay')
+let filterColor
+
+for(let i=0;i<filterArr.length;i++){
+    filterArr[i].addEventListener('click',function(){
+        filterColor = filterArr[i].style.backgroundColor
+        filterArea.style.backgroundColor = filterColor
+    })
+}
+
+//////////////////////// timer ///////////////////////
+
+let secs = 0
+let min = 0
+let hrs = 0
+
+let timer = document.querySelector('.timer')
+
+recordBtn.addEventListener('click',function(){
+    setInterval(() => {
+        timer.innerText = `${hrs}:${min}:${secs}`
+        if(secs == 59){
+            secs = 0
+            if(min == 59){
+                min = 0
+                if(hrs == 23){
+                    hrs = 0
+                }
+                else{
+                    hrs++
+                }
+            }
+            else{
+                min++
+            }
+        }
+        else{
+            secs++
+        }
+    },1000)
+})
+
