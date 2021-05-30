@@ -9,6 +9,11 @@
 
 let videoElem = document.querySelector('.video')
 let recordBtn = document.querySelector('.record')
+let timerDiv = document.querySelector('.timer')
+let timerController;
+let secs = 0
+let mins = 0
+let hrs = 0
 
 let mediaRecordingObjectForCurrStream
 let isRecording = false
@@ -53,61 +58,22 @@ recordBtn.addEventListener('click', function () {
     if (isRecording == false) {
         mediaRecordingObjectForCurrStream.start()                //  start rec
         recordBtn.innerText = 'Recording...';
+        startTimer();
     } else {
         mediaRecordingObjectForCurrStream.stop()                 // stop rec
         recordBtn.innerText = 'Record';
+        stopTimer();
     }
     isRecording = !isRecording
 });
 
-////////////////////////////////////////////////// today
-
-let captureImgBtn = document.querySelector('.click')
-
-captureImgBtn.addEventListener('click',function(){
-    let canvas = document.createElement('canvas')
-    canvas.height = videoElem.videoHeight
-    canvas.width = videoElem.videoWidth
-    let tool = canvas.getContext('2d')
-    tool.drawImage(videoElem,0,0)
-    if(filterColor){
-        tool.fillStyle = filterColor
-        tool.fillRect(0,0,canvas.width,canvas.height)
-    }
-    let url = canvas.toDataURL()
-    let a = document.createElement('a')
-    a.download = 'file.png'
-    a.href = url
-    a.click()
-    a.remove()
-})
-
-let filterArr = document.querySelectorAll('.filter')
-let filterArea = document.querySelector('.filter_overlay')
-let filterColor
-
-for(let i=0;i<filterArr.length;i++){
-    filterArr[i].addEventListener('click',function(){
-        filterColor = filterArr[i].style.backgroundColor
-        filterArea.style.backgroundColor = filterColor
-    })
-}
-
-//////////////////////// timer ///////////////////////
-
-let secs = 0
-let min = 0
-let hrs = 0
-
-let timer = document.querySelector('.timer')
-
-recordBtn.addEventListener('click',function(){
-    setInterval(() => {
-        timer.innerText = `${hrs}:${min}:${secs}`
+// start time
+function startTimer(){
+    timerController = setInterval(() => {
         if(secs == 59){
             secs = 0
-            if(min == 59){
-                min = 0
+            if(mins == 59){
+                mins = 0
                 if(hrs == 23){
                     hrs = 0
                 }
@@ -116,12 +82,61 @@ recordBtn.addEventListener('click',function(){
                 }
             }
             else{
-                min++
+                mins++
             }
         }
         else{
             secs++
         }
+        timerDiv.innerText = `${hrs<10 ? '0'+hrs : hrs}:${mins<10 ? '0'+mins : mins}:${secs<10 ? '0'+secs : secs}`
     },1000)
+}
+
+// stops time
+function stopTimer(){
+    clearInterval(timerController);             // stops the timer
+    hrs = 0                                   // set to zeros
+    mins = 0
+    secs = 0
+    timerDiv.innerText = `${hrs<10 ? '0'+hrs : hrs}:${mins<10 ? '0'+mins : mins}:${secs<10 ? '0'+secs : secs}`
+}
+
+
+/////////////////////// canvas //////////////////////////
+
+let captureImgBtn = document.querySelector('.click-image')
+let filterColorsArr = document.querySelectorAll('.filter')
+let overlay = document.querySelector('.filter_overlay')
+let filterColor;
+
+
+// click image
+captureImgBtn.addEventListener('click',function(){
+    let canvas = document.createElement('canvas') // create canvas
+    canvas.height = videoElem.videoHeight
+    canvas.width = videoElem.videoWidth
+    let tool = canvas.getContext('2d')
+    tool.drawImage(videoElem,0,0)  // draw video on canvas
+    if(filterColor){             // if filtered color chosen
+        tool.fillStyle = filterColor
+        tool.fillRect(0,0,canvas.width,canvas.height)
+    }
+    let url = canvas.toDataURL()  // download canvas
+    let a = document.createElement('a')
+    a.download = 'file.png'
+    a.href = url
+    a.click()
+    a.remove()
 })
+
+// set filter on video
+for(let i=0;i<filterColorsArr.length;i++){
+    filterColorsArr[i].addEventListener('click',function(){
+        filterColor = filterColorsArr[i].style.backgroundColor
+        overlay.style.backgroundColor = filterColor
+    })
+}
+
+
+
 

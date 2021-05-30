@@ -64,9 +64,10 @@ body{
     left: 7vw;
     /* above overlay */
     z-index: 3;
-    background: wheat;
+    border: 2px solid white;
+    color: beige;
     text-align: center;
-    padding-top: 30px;
+    padding-top: 16px;
 }
 
 /********* buttons *********/
@@ -82,7 +83,7 @@ body{
     /* above overlay */
     z-index: 3;
 }
-.click{
+.click-image{
     top: 51%;  
 }
 
