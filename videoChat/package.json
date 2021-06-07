@@ -1,0 +1,19 @@
+{
+  "name": "videochat",
+  "version": "1.0.0",
+  "description": "peer to peet video chatting",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saurabhkumar23/remote-rich.git"
+  },
+  "author": "Saurabh Kumar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/saurabhkumar23/remote-rich/issues"
+  },
+  "homepage": "https://github.com/saurabhkumar23/remote-rich#readme"
+}
