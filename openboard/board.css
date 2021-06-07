@@ -1,0 +1,53 @@
+*{
+    box-sizing: border-box;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+}
+
+/***************** menu *************/
+
+.menu{
+    width: 40vw;
+    height: 10vh;
+    margin: 2vh auto;
+    border: 2px solid;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.color, .download{
+    height: 70%;
+    width: 20%;
+}
+
+.red{
+    background-color: red;
+}
+.green{
+    background-color: green;
+}
+.blue{
+    background-color: blue;
+}
+
+.download{
+    border: 1px solid;
+    padding-top: 1rem;
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+   

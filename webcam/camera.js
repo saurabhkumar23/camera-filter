@@ -1,5 +1,5 @@
 // objective 1 : show myself on HTML page?       ask permission --> get stream --> set on html video tag
-// objective 2 : record my video?    
+// objective 2 : record and download my video?    
 //             attach my video --> start rec --> 
 //             wait for buffer to fill --> ondataavailable fires --> save rec           <--- continues....
 //             rec stop --> onstop fires --> download rec
@@ -7,14 +7,10 @@
 // mediaDevices - ask permission, get stream
 // MediaRecorder - record my video
 
-let videoElem = document.querySelector('.video')
-let recordBtn = document.querySelector('.record')
-let timerDiv = document.querySelector('.timer')
 let timerController;
 let secs = 0
 let mins = 0
 let hrs = 0
-
 let mediaRecordingObjectForCurrStream
 let isRecording = false
 let recording = []
@@ -101,16 +97,11 @@ function stopTimer(){
     timerDiv.innerText = `${hrs<10 ? '0'+hrs : hrs}:${mins<10 ? '0'+mins : mins}:${secs<10 ? '0'+secs : secs}`
 }
 
+/********************** canvas *******************/
 
-/////////////////////// canvas //////////////////////////
-
-let captureImgBtn = document.querySelector('.click-image')
-let filterColorsArr = document.querySelectorAll('.filter')
-let overlay = document.querySelector('.filter_overlay')
 let filterColor;
 
-
-// click image
+// donwload image
 captureImgBtn.addEventListener('click',function(){
     let canvas = document.createElement('canvas') // create canvas
     canvas.height = videoElem.videoHeight
